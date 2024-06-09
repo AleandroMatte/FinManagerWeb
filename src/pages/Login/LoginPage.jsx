@@ -4,7 +4,6 @@ import {
   Heading,
   Input,
   Button,
-  InputGroup,
   Stack,
   InputLeftElement,
   chakra,
@@ -15,9 +14,10 @@ import {
   FormHelperText,
   InputRightElement,
   Image,
-  Text
+  Text,
+  FormLabel
 } from "@chakra-ui/react";
-import { FaUserAlt, FaLock } from "react-icons/fa";
+import { FaUserAlt, FaLock, FaEye } from "react-icons/fa";
 
 
 const CFaUserAlt = chakra(FaUserAlt);
@@ -36,6 +36,7 @@ const LoginPage = () => {
       backgroundColor="gray.200"
       justifyContent="center"
       alignItems="center"
+
     >
       <Flex
         flexDir="row"
@@ -58,43 +59,31 @@ const LoginPage = () => {
           alignItems="center"
           backgroundColor="whiteAlpha.900"
           width="50%"
-          height="100%">
-          <Stack height={"80%"} width={"80%"} backgroundColor="whiteAlpha.500" justifyContent="center" alignItems="center" boxShadow={"2xl"}>
-            <Avatar bg="black"/>
-            <Heading color="orange.400">Welcome</Heading>
-            <Box width="100%">
-              <form >
+          height="100vh">
+          <Stack  width={"80%"} height={"80%"} backgroundColor="whiteAlpha.500" justifyContent="center" alignItems="center" boxShadow={"2xl"}
+          padding={"10%"}>
+            <Avatar bg="black" margin={"auto"}/>
+            <Heading color="orange.400">Bem Vindo</Heading>
+            <Box width={"100%"} height={"100%"}  marginBottom={"0px"}>
                 <Stack
-                  spacing={4}
-                  p="8%">
-                  <FormControl>
-                    <InputGroup width={"80%"} margin={"auto"}>
-                      <InputLeftElement
-                        pointerEvents="none"
-                        children={<CFaUserAlt color="gray.300" />}
-                      />
-                      <Input type="email" placeholder="email address" />
-                    </InputGroup>
+                width={"80%"}
+                margin={"0px auto"}
+                  spacing={4}>
+                  <FormControl label='login'>
+                    <FormLabel marginLeft={"5px"}>Email</FormLabel>
+                      <Input  type="email" placeholder="email" />
                   </FormControl>
                   <FormControl>
-                    <InputGroup width={"80%"} margin={"auto"}>
-                      <InputLeftElement
-                        pointerEvents="none"
-                        color="gray.300"
-                        children={<CFaLock color="gray.300" />}
-                      />
+                  <FormLabel marginLeft={"5px"}>Senha</FormLabel>
                       <Input
                         type={showPassword ? "text" : "password"}
-                        placeholder="Password"
+                        placeholder="senha"
                       />
-                      <InputRightElement width="40%">
-                        <Button h="80%" left={"20%"} onClick={handleShowClick}>
-                          {showPassword ? "Hide" : "Show"}
+                        <Button marginLeft={"5px"} h="100%" padding={"2px"} bgColor={"gray.200"}  onClick={handleShowClick}>
+                          {showPassword ? <FaLock/>: <FaEye/>}
                         </Button>
-                      </InputRightElement>
-                    </InputGroup>
                     <FormHelperText textAlign="right" marginRight={"10%"}>
-                      <Link>forgot password?</Link >
+                      <Link>Esqueci minha senha</Link >
                     </FormHelperText>
                   </FormControl>
                   <Button
@@ -108,13 +97,13 @@ const LoginPage = () => {
                     Login
                   </Button>
                 </Stack>
-              </form>
-            </Box>
-            <Box>
-              New to us?{" "}
-              <Link color="orange.500" href="#">
-                Sign Up
+
+                <Box textAlign={"center"} marginTop={"3%"}>
+              Ainda não tem uma conta?{" "}
+              <Link  color="orange.500" href="/Register">
+                Criar Conta
               </Link>
+            </Box>
             </Box>
           </Stack>
         </Flex>
