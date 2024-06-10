@@ -48,7 +48,7 @@ const LoginPage = () => {
         <Flex width="50%" alignContent={"center"} justifyContent={"center"}   maxH={"100%"}>
           <Image src='src/assets/StockSnap_JONMP7TPGK.jpg' width={"50%"}  opacity={"30%"}  position={"absolute"}  height={"100%"}/>
           <Stack justifyContent={"center"} alignContent={"center"} alignItems={"center"}  width={"60%"} height={"50%"} zIndex={"10"} position={"relative"} top={"20%"}   >
-            <Image src='src/assets/Logo_personalizada_sem_fundo.png' height={"60%"} width={"100%"} />
+            <Image src='src/assets/Logo_personalizada_sem_fundo.png' height={"70%"} width={"90%"} overflow={"hidden"}/>
             <Text color={"orange.100"} fontFamily={"serif"} fontSize={18} fontWeight={"600"}>GERENCIE CADA CENTAVO</Text>
           </Stack>
         </Flex>
