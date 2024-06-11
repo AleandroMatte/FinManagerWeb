@@ -1,8 +1,46 @@
 import { Button, Flex, FormControl, FormHelperText, FormLabel, Heading, Input, InputGroup, InputLeftElement, InputRightElement, Stack, Text } from '@chakra-ui/react';
-import React from 'react';
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
+import React, { useState } from 'react';
+import { Tabs, TabList, TabPanels, Tab, TabPanel , useToast } from '@chakra-ui/react'
+import handlePostResponse from '../../components/Toast';
+import BackendApi from '../../Services';
 
 const RegisterPage = () => {
+    const toast = useToast()
+    const [login , setLogin] = useState("");
+    const [first_name , setFirstName] = useState("");
+    const [last_name , setLastName] = useState("");
+    const [role , setRole] = useState("ADMIN");
+    const [passwd , setPassWd] = useState("");
+    const [passwd_confirmation , setPassWdConfirmation] = useState("");
+
+
+    async function post_registration_data(){
+        if (login==="" || passwd==="" || passwd_confirmation===""){
+            handlePostResponse(toast,false,"Erro","Todos os campos são obrigatórios")
+            return;
+        }
+
+        if(passwd!== passwd_confirmation){
+            handlePostResponse(toast,false,"Erro","Todos os campos são obrigatórios")
+            return;
+        }
+
+        const data = {
+            first_name: ""
+        }
+
+        try {
+
+            const response = await BackendApi.post
+            
+        } catch (error) {
+            
+        }
+
+    }
+
+
+
     return (
         <Flex
             flexDir="column"
@@ -47,13 +85,14 @@ const RegisterPage = () => {
                     <Heading size={"lg"}>Registrar</Heading>
                     <FormControl>
                         <FormLabel> Email</FormLabel>
-                        <Input type="email" placeholder="email" />
+                        <Input type="email" placeholder="email" onChange={(e) => setLogin(e.target.value)} />
                     </FormControl>
                     <FormControl>
                         <FormLabel>Senha</FormLabel>
                         <Input
                             type="text"
                             placeholder="senha"
+                            onChange={(e) => setPassWd(e.target.value)}
                         />
                     </FormControl>
                     <FormControl>
@@ -61,6 +100,7 @@ const RegisterPage = () => {
                         <Input
                             type="text"
                             placeholder="confirmar senha"
+                            onChange={(e) => setPassWdConfirmation(e.target.value)}
                         />
                     </FormControl>
                     <Button color={"white"} bgColor={"orange.400"}>Criar Conta</Button>
@@ -73,6 +113,7 @@ const RegisterPage = () => {
             </Flex>
         </Flex>
     );
-};
+
+}
 
 export default RegisterPage;
