@@ -15,9 +15,13 @@ import {
   InputRightElement,
   Image,
   Text,
-  FormLabel
+  FormLabel,
+  useToast
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock, FaEye } from "react-icons/fa";
+import BackendApi from '../../Services';
+import handlePostResponse from '../../components/Toast';
+import { useNavigate } from 'react-router-dom';
 
 
 const CFaUserAlt = chakra(FaUserAlt);
@@ -25,8 +29,54 @@ const CFaLock = chakra(FaLock);
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [buttonPressed, setButtonRecentPress] = useState(false);
+  const [login, setLogin] = useState();
+  const [passwd, setPassd] = useState();
+  const toast = useToast();
+  const navigate = useNavigate();
+
 
   const handleShowClick = () => setShowPassword(!showPassword);
+
+
+
+  async function post_registration_data(){
+    setButtonRecentPress(true)
+    if (login==="" || passwd===""){
+        handlePostResponse(toast,false,"Erro","Todos os campos são obrigatórios!")
+        setButtonRecentPress(false)
+
+        return;
+    }
+
+
+    const data = {
+        username:login,
+        password:passwd
+    }
+
+    try {
+
+        const response = await BackendApi.post("/auth/authenticate",data,{
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        localStorage.setItem("user_token",response.data?.token)
+        setButtonRecentPress(false)
+        navigate("/Home")
+        handlePostResponse(toast,true,"Login feito com Sucesso!",`seja bem vindo ${login}`)
+
+        
+    } catch (error) {
+        console.log(error)
+        handlePostResponse(toast,false,"Algo deu errado!",`Algo deu errado da nossa parte, volte mais tarde`)
+        setButtonRecentPress(false)
+
+
+    }
+
+}
 
   return (
     <Flex
@@ -71,11 +121,11 @@ const LoginPage = () => {
                   spacing={4}>
                   <FormControl label='login'>
                     <FormLabel marginLeft={"5px"}>Email</FormLabel>
-                      <Input  type="email" placeholder="email" />
+                      <Input onChange={(e) => setLogin(e.target.value)}  type="email" placeholder="email" />
                   </FormControl>
                   <FormControl>
                   <FormLabel marginLeft={"5px"}>Senha</FormLabel>
-                      <Input
+                      <Input onChange={(e) => setPassd(e.target.value)}
                         type={showPassword ? "text" : "password"}
                         placeholder="senha"
                       />
@@ -87,6 +137,8 @@ const LoginPage = () => {
                     </FormHelperText>
                   </FormControl>
                   <Button
+                    onClick={post_registration_data}
+                    disabled ={buttonPressed}
                     borderRadius={0}
                     type="submit"
                     variant="solid"
