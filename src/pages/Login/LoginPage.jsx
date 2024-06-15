@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Flex,
   Heading,
@@ -20,8 +20,9 @@ import {
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock, FaEye } from "react-icons/fa";
 import BackendApi from '../../Services';
-import handlePostResponse from '../../components/Toast';
+import handlePostResponse from '../../components/ToastMessage/Toast';
 import { useNavigate } from 'react-router-dom';
+import useTokenCheck from '../../custom_hooks';
 
 
 const CFaUserAlt = chakra(FaUserAlt);
@@ -36,9 +37,17 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
 
+
   const handleShowClick = () => setShowPassword(!showPassword);
 
 
+  useEffect(() => {
+    try {
+      localStorage.removeItem('user_token');
+    } catch (error) { }
+  
+
+  },[])
 
   async function post_registration_data(){
     setButtonRecentPress(true)

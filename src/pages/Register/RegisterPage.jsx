@@ -1,7 +1,7 @@
-import { Button, Flex, FormControl, FormHelperText, FormLabel, Heading, Input, InputGroup, InputLeftElement, InputRightElement, Stack, Text } from '@chakra-ui/react';
+import { Button, Flex, FormControl, FormHelperText, FormLabel, Heading, Image, Input, InputGroup, InputLeftElement, InputRightElement, Stack, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { Tabs, TabList, TabPanels, Tab, TabPanel , useToast } from '@chakra-ui/react'
-import handlePostResponse from '../../components/Toast';
+import handlePostResponse from '../../components/ToastMessage/Toast';
 import BackendApi from '../../Services';
 import { useNavigate } from 'react-router-dom';
 
@@ -93,6 +93,7 @@ const RegisterPage = () => {
                 alignItems={"center"}
                 
             >
+
                 <Tabs minHeight={"50vh"} w={"100%"}   align='center'>
                     <TabList>
                         <Tab>Informações importantes</Tab>
