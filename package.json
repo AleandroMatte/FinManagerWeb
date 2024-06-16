@@ -10,7 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",
+    "@tanstack/react-table": "^8.17.3",
     "axios": "^1.7.2",
     "jwt-decode": "^4.0.0",
     "react": "^18.2.0",

@@ -1,0 +1,30 @@
+.content-table{
+    border-collapse: collapse;
+    margin: 0% ;
+    border-radius: 5px 5px 0 0;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.content-table tr th{
+    background-color: #676767;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+}
+
+.content-table td {
+    text-align: center;
+    padding: 7px 10px;
+}
+.content-table  tr{
+    border-bottom: 1px solid #dddddd;
+    cursor: pointer;
+}
+
+
+
+
+.content-table  tr:hover{
+    color:  #FFA726;
+    background-color: #e9e9e9;
+}

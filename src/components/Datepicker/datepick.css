@@ -1,0 +1,20 @@
+.Datepicker {
+  text-align: initial;
+  width: 100%;
+}
+.Datepicker input {
+  text-align: initial;
+  width: 96%;
+  border: solid;
+  border-color: rgb(222, 222, 222);
+  border-width: 1px;
+  font-size: 20px;
+  border-radius: 5px;
+  padding: 3px;
+  height: 15%;
+}
+
+.Datepicker h1{
+  color: black;
+  font-weight: 500;
+}
