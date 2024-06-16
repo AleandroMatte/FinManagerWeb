@@ -5,6 +5,7 @@ import Navbar from './components/Sidebar';
 import HomeContainer from './pages/Home/HomeContainer';
 import useTokenCheck from './custom_hooks';
 import DebtContainer from './pages/Debts/DebtContainer';
+import WinContainer from './pages/Wins/WinContainer';
 
 
 function App() {
@@ -23,7 +24,7 @@ function App() {
         <Route path="/Register" element={<RegisterPage />} />
         <Route path="/Home" element={<HomeContainer />} />
         <Route path="/Debts" element={<DebtContainer/>}></Route>
-        <Route path="/Wins" element={<></>}></Route>
+        <Route path="/Wins" element={<WinContainer/>}></Route>
       </Routes>
     </>
   )

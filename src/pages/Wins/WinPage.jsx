@@ -6,17 +6,18 @@ import PaginatedTable from '../../components/Table';
 import handlePostResponse from '../../components/ToastMessage/Toast';
 import BackendApi from '../../Services';
 import { useNavigate } from 'react-router-dom';
+import PostWinModal from '../../components/PostWinModal';
 
 
-const DebtPage = ({ columns }) => {
+const WinPage = ({ columns }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [columnFilters, SetColumnFilters] = useState([])
     const [estado_tabela, setEstadoTabela] = useState(null);
     const [loading, setIsloading] = useState(false)
-    const [user_debts, setUserDebtData] = useState();
-    const [to_pay, setToPay] = useState();
-    const [paid, setPaid] = useState();
-    const [unpaid, setUnpaid] = useState();
+    const [user_wins, setUserWins] = useState();
+    const [to_win, setToWin] = useState();
+    const [won, setWon] = useState();
+    const [still_not_won, setStillNotWon] = useState();
     const toast = useToast()
     const navigate = useNavigate()
 
@@ -32,10 +33,10 @@ const DebtPage = ({ columns }) => {
                     Authorization: `Bearer ${localStorage.getItem("user_token")}`
                 }
             })
-            setUserDebtData(response?.data['Debts'])
-            setToPay(response?.data['to_pay_this_year'])
-            setPaid(response?.data['number_of_debts_paid'])
-            setUnpaid(response?.data['unpaid_debts'])
+            setUserWins(response?.data['win_data'])
+            to_win(response?.data['num_of_wins_to_recieve'])
+            won(response?.data['num_of_wins_recieved'])
+            still_not_won(response?.data['recebimentos_não_feitos'])
         }
         catch (error) {
             if (error.response && error.response.status === 401) {
@@ -62,25 +63,25 @@ const DebtPage = ({ columns }) => {
                 refresh_button_action={fetch_user_debt}
                 plus_button_action={onOpen}
                 plus_button_text={"Adicionar débito"}
-            />
+            /> {/*
             <Flex flexDir={"row"} w={"100%"}>
                 <Flex flexDir={"column"} h={"100%"} justifyContent={"space-evenly"} paddingRight={"10px"} paddingLeft={"10px"} >
                     <Stack   bg={"red"}>
-                        <Card bgColor={"green.300"}  variant ={"elevated"}><CardHeader textAlign={"center"}>Dividas pagas em 2024</CardHeader><CardBody>
+                        <Card bgColor={"green.300"}  variant ={"elevated"}><CardHeader textAlign={"center"}>Quantidade de recebimentos em 2024</CardHeader><CardBody>
                             <Flex justifyContent={"center"}>
-                                <Text fontSize='2xl' as='b'>{paid}</Text>
+                                <Text fontSize='2xl' as='b'>{won}</Text>
                             </Flex></CardBody></Card>
                     </Stack>
                     <Stack marginTop={"10%"} >
-                        <Card  bg={"orange.300"} variant ={"elevated"}><CardHeader textAlign={"center"}>Dividas a pagar em 2024</CardHeader><CardBody>
+                        <Card  bg={"orange.300"} variant ={"elevated"}><CardHeader textAlign={"center"}>Recebimentos em 2024</CardHeader><CardBody>
                             <Flex justifyContent={"center"}>
-                                <Text fontSize='2xl' as='b'>{to_pay}</Text>
+                                <Text fontSize='2xl' as='b'>{to_win}</Text>
                             </Flex></CardBody></Card>
                     </Stack>
                     <Stack marginTop={"10%"} bg={"red"} >
-                        <Card variant={"elevated"} bgColor={"red.300"}><CardHeader textAlign={"center"}>Dividas vencidas</CardHeader><CardBody>
+                        <Card variant={"elevated"} bgColor={"red.300"}><CardHeader textAlign={"center"}>Recebimentos Vencidos</CardHeader><CardBody>
                             <Flex justifyContent={"center"}>
-                                <Text  fontSize='2xl' as='b'>{unpaid}</Text>
+                                <Text  fontSize='2xl' as='b'>{still_not_won}</Text>
                             </Flex></CardBody></Card>
                     </Stack>
                 </Flex>
@@ -93,13 +94,13 @@ const DebtPage = ({ columns }) => {
                     on_row_click={() => console.log(" ")}
                 />
             </Flex>
-
+                */}
             {isOpen && (
-                <PostDebtModal isOpen={isOpen} onClose={onClose} />
+                <PostWinModal isOpen={isOpen} onClose={onClose} />
             )}
         </Flex>
 
     );
 };
 
-export default DebtPage;
+export default WinPage;
