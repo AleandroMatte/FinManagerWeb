@@ -37,8 +37,9 @@ const WinContainer = () => {
             cell: (props) => <p>{format_date(props.getValue())}</p>
         },
         {
-            header: 'Ações',
-            cell: (props) => <p></p>
+            accessorKey: 'recebida',
+            header: 'Recebida?',
+            cell: (props) => <p>{props.getValue()===true? "recebida":""}</p>
         }
     ], [])
 

@@ -1,4 +1,4 @@
-import { Box, Card, CardBody, CardHeader, Flex, Stack, Text, useDisclosure, useToast } from '@chakra-ui/react';
+import { Box, Card, CardBody, CardHeader, Flex, ModalBody, Stack, Text, useDisclosure, useToast } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import ButtonRefresAndAction from '../../components/RefreshAndAction';
 import PostDebtModal from '../../components/PostDebtModal';
@@ -7,10 +7,12 @@ import handlePostResponse from '../../components/ToastMessage/Toast';
 import BackendApi from '../../Services';
 import { useNavigate } from 'react-router-dom';
 import PostWinModal from '../../components/PostWinModal';
+import WinInspectModal from '../../components/InsepctWinModal/WinInspectModal';
 
 
 const WinPage = ({ columns }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen:isOpenModalInspect, onOpen:onOpenModalInspect, onClose:onCloseModalInspect } = useDisclosure()
     const [columnFilters, SetColumnFilters] = useState([])
     const [estado_tabela, setEstadoTabela] = useState(null);
     const [loading, setIsloading] = useState(false)
@@ -19,6 +21,7 @@ const WinPage = ({ columns }) => {
     const [won, setWon] = useState();
     const [still_not_won, setStillNotWon] = useState();
     const [amount_recieved, setAmountRecieved] = useState();
+    const [modal_data, setModalData] = useState();
     const toast = useToast()
     const navigate = useNavigate()
 
@@ -39,10 +42,8 @@ const WinPage = ({ columns }) => {
             setToWin(response?.data['num_of_wins_to_recieve'])
             setWon(response?.data['num_of_wins_recieved'])
             setStillNotWon(response?.data['recebimentos_não_feitos'])
-            console.log(response.data)
         }
         catch (error) {
-            console.log(error)
             if (error.response && error.response.status === 401) {
                 handlePostResponse(toast, false, "Não Authenticado", "Favor reautenticar")
                 navigate("/")
@@ -54,6 +55,10 @@ const WinPage = ({ columns }) => {
 
     }
 
+    function handle_row_clicked(win_data) {
+        setModalData(win_data)
+        onOpenModalInspect()
+      }
 
     useEffect(() => {
         fetch_user_wins()
@@ -101,12 +106,15 @@ const WinPage = ({ columns }) => {
                     columns={columns}
                     lift_table_state={handleTableInstance}
                     use_custom_filtering={true}
-                    on_row_click={() => console.log(" ")}
+                    on_row_click={handle_row_clicked}
                 />
             </Flex>
              
             {isOpen && (
                 <PostWinModal isOpen={isOpen} onClose={onClose} />
+            )}
+            {isOpenModalInspect && (
+                <WinInspectModal isOpen={isOpenModalInspect} onClose={onCloseModalInspect} modal_data={modal_data} />
             )}
         </Flex>
 

@@ -11,7 +11,7 @@ const Datepicker = (props) => {
   return (
     <div className="Datepicker" >
       <h1>{props.label}</h1>
-      <input type="date" onChange={handleDateChange} defaultValue={props.default? props.default:null}></input>
+      <input type="date" onChange={handleDateChange} defaultValue={props.default? props.default:null} ></input>
     </div>
   );
 };
