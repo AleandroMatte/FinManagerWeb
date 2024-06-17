@@ -29,7 +29,7 @@ const DebtContainer = () => {
         {
             accessorKey: 'data_pagamento',
             header: 'Data de Pagamento',
-            cell: (props) => <p>{props.getValue()}</p>
+            cell: (props) => <p>{format_date(props.getValue())}</p>
         },
         {
             accessorKey: 'created_at',
@@ -38,7 +38,7 @@ const DebtContainer = () => {
         },
         {
             header: 'Ações',
-            cell: (props) => <p>{format_date(props.getValue())}</p>
+            cell: (props) => <p></p>
         }
     ], [])
 

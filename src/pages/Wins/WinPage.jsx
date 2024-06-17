@@ -18,6 +18,7 @@ const WinPage = ({ columns }) => {
     const [to_win, setToWin] = useState();
     const [won, setWon] = useState();
     const [still_not_won, setStillNotWon] = useState();
+    const [amount_recieved, setAmountRecieved] = useState();
     const toast = useToast()
     const navigate = useNavigate()
 
@@ -26,19 +27,22 @@ const WinPage = ({ columns }) => {
     };
 
 
-    async function fetch_user_debt() {
+    async function fetch_user_wins() {
         try {
-            const response = await BackendApi.get(`/user/debt`, {
+            const response = await BackendApi.get(`/user/wins`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("user_token")}`
                 }
             })
+            setAmountRecieved(response?.data['total_amount_recieved'])
             setUserWins(response?.data['win_data'])
-            to_win(response?.data['num_of_wins_to_recieve'])
-            won(response?.data['num_of_wins_recieved'])
-            still_not_won(response?.data['recebimentos_não_feitos'])
+            setToWin(response?.data['num_of_wins_to_recieve'])
+            setWon(response?.data['num_of_wins_recieved'])
+            setStillNotWon(response?.data['recebimentos_não_feitos'])
+            console.log(response.data)
         }
         catch (error) {
+            console.log(error)
             if (error.response && error.response.status === 401) {
                 handlePostResponse(toast, false, "Não Authenticado", "Favor reautenticar")
                 navigate("/")
@@ -52,7 +56,7 @@ const WinPage = ({ columns }) => {
 
 
     useEffect(() => {
-        fetch_user_debt()
+        fetch_user_wins()
     }, [])
 
 
@@ -60,22 +64,28 @@ const WinPage = ({ columns }) => {
     return (
         <Flex flexDir={"column"} w={"100%"} padding={"1%"}>
             <ButtonRefresAndAction
-                refresh_button_action={fetch_user_debt}
+                refresh_button_action={fetch_user_wins}
                 plus_button_action={onOpen}
                 plus_button_text={"Adicionar débito"}
-            /> {/*
+            />
             <Flex flexDir={"row"} w={"100%"}>
                 <Flex flexDir={"column"} h={"100%"} justifyContent={"space-evenly"} paddingRight={"10px"} paddingLeft={"10px"} >
-                    <Stack   bg={"red"}>
-                        <Card bgColor={"green.300"}  variant ={"elevated"}><CardHeader textAlign={"center"}>Quantidade de recebimentos em 2024</CardHeader><CardBody>
+                    <Stack>
+                        <Card bgColor={"whiteAlpha.600"}  variant ={"elevated"}><CardHeader textAlign={"center"}>Total recebido em 2024</CardHeader><CardBody>
+                            <Flex justifyContent={"center"}>
+                                <Text color={"green"} fontSize='2xl' as='b'>R$ {amount_recieved}</Text>
+                            </Flex></CardBody></Card>
+                    </Stack>
+                    <Stack marginTop={"10%"}   bg={"red"}>
+                        <Card bgColor={"green.300"}  variant ={"elevated"}><CardHeader textAlign={"center"}>Total de recebimentos em 2024</CardHeader><CardBody>
                             <Flex justifyContent={"center"}>
                                 <Text fontSize='2xl' as='b'>{won}</Text>
                             </Flex></CardBody></Card>
                     </Stack>
                     <Stack marginTop={"10%"} >
-                        <Card  bg={"orange.300"} variant ={"elevated"}><CardHeader textAlign={"center"}>Recebimentos em 2024</CardHeader><CardBody>
+                        <Card  bg={"orange.300"} variant ={"elevated"}><CardHeader textAlign={"center"}>À Receber em 2024</CardHeader><CardBody>
                             <Flex justifyContent={"center"}>
-                                <Text fontSize='2xl' as='b'>{to_win}</Text>
+                                <Text color={"green"} fontSize='2xl' as='b'>R${to_win}</Text>
                             </Flex></CardBody></Card>
                     </Stack>
                     <Stack marginTop={"10%"} bg={"red"} >
@@ -86,7 +96,7 @@ const WinPage = ({ columns }) => {
                     </Stack>
                 </Flex>
                 <PaginatedTable
-                    data={user_debts ? user_debts : {}}
+                    data={user_wins ? user_wins : {}}
                     columnFilters={columnFilters}
                     columns={columns}
                     lift_table_state={handleTableInstance}
@@ -94,7 +104,7 @@ const WinPage = ({ columns }) => {
                     on_row_click={() => console.log(" ")}
                 />
             </Flex>
-                */}
+             
             {isOpen && (
                 <PostWinModal isOpen={isOpen} onClose={onClose} />
             )}

@@ -15,6 +15,12 @@ import {
   Input,
   Box,
   Checkbox,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+  NumberInput,
+  Flex,
 } from '@chakra-ui/react';
 import Datepicker from '../Datepicker';
 import BackendApi from '../../Services';
@@ -29,6 +35,7 @@ const PostWinModal = ({ isOpen, onClose }) => {
   const [data_recebimento, setDataRecebimento] = useState()
   const [recorrencia_id, setRecorrenciaId] = useState()
   const [tipos_recebimento, setTiposRecebimento] = useState()
+  const [repetitions, setRepetitions] = useState()
   const toast = useToast();
 
 
@@ -48,17 +55,23 @@ const PostWinModal = ({ isOpen, onClose }) => {
   }
   async function post_win() {
     const win_data = {
+      valor: valor,
+      origem: origem,
+      recebida: recebida,
+      data_recebimento: data_recebimento,
+      recorrencia: recorrencia_id
 
     }
 
     try {
-      const response = await BackendApi.post(`/user/wins`,win_data,{
+      const response = await BackendApi.post(`/user/wins`, win_data, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("user_token")}`,
           "Content-Type": "application/json"
-        }
+        },
+        params:{repetitions:repetitions}
       })
-      handlePostResponse(toast, true, "Confirmado", `Recebimento de {} no valor de {valor} confirmada`)
+      handlePostResponse(toast, true, "Confirmado", `Recebimento de ${origem} no valor de ${valor} confirmado`)
     } catch (error) {
       handlePostResponse(toast, false, "Algo deu errado", "tente novamente mais tarde")
 
@@ -80,7 +93,7 @@ const PostWinModal = ({ isOpen, onClose }) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Inserir Débitos</ModalHeader>
+          <ModalHeader>Inserir Recebimento</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Box>
@@ -118,12 +131,24 @@ const PostWinModal = ({ isOpen, onClose }) => {
                     </option>
                   ))}
                 </Select>
-                </FormLabel>
-                <Box marginLeft={"0px"}>
-                <Checkbox onChange={(e) => setRecebida(!recebida)}  size='md' colorScheme='green' >
-                  Recebida?
+              </FormLabel>
+              <Flex marginLeft={"0px"} flexDir={"row"} justifyContent={"space-between"}>
+                <NumberInput defaultValue={1} min={1}
+                  max={59}
+                  value={repetitions}
+                  onChange={(e) => setRepetitions(e)}>
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+                <Box >
+                  <Checkbox onChange={(e) => setRecebida(!paga)} size='md' colorScheme='green' >
+                    Recebida?
                   </Checkbox>
-                  </Box>
+                </Box>
+              </Flex>
 
             </FormControl>
           </ModalBody>

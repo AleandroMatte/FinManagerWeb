@@ -10,15 +10,23 @@ import TableFilter from '../Filters'
 const PaginatedTable = ({ columns, data, on_row_click, columnFilters, use_custom_filtering, row_identificator,
     setColumnFilters, lift_table_state }) => {
 
+        const [pagination, setPagination] = useState({
+            pageIndex: 0, //initial page index
+            pageSize: 15, //default page size
+          });
+
     const table = useReactTable({
         columns: columns,
         data: data,
         state: {
             columnFilters,
+            pagination
         },
+        onPaginationChange: setPagination,
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
-        getPaginationRowModel: getPaginationRowModel()
+        defaultPageSize:15,
+        getPaginationRowModel: getPaginationRowModel(),
     })
 
 

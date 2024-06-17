@@ -15,11 +15,16 @@ import {
   Input,
   Box,
   Checkbox,
+  Flex,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from '@chakra-ui/react';
 import Datepicker from '../Datepicker';
 import BackendApi from '../../Services';
 import handlePostResponse from '../ToastMessage/Toast';
-import { SiValorant } from 'react-icons/si';
 
 
 const PostDebtModal = ({ isOpen, onClose }) => {
@@ -29,6 +34,7 @@ const PostDebtModal = ({ isOpen, onClose }) => {
   const [data_pagamento, setDataPagamento] = useState()
   const [recorrencia_id, setRecorrenciaId] = useState()
   const [tipos_divida, setTiposDivida] = useState()
+  const [repetitions, setRepetitions] = useState(1)
   const toast = useToast();
 
 
@@ -56,11 +62,12 @@ const PostDebtModal = ({ isOpen, onClose }) => {
     }
 
     try {
-      const response = await BackendApi.post(`/user/debt`,debt_data,{
+      const response = await BackendApi.post(`/user/debt`, debt_data, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("user_token")}`,
           "Content-Type": "application/json"
-        }
+        },
+        params: {repetitions:repetitions}
       })
       handlePostResponse(toast, true, "Confirmado", `Divida para ${destino} no valor de ${valor} confirmada`)
     } catch (error) {
@@ -114,7 +121,7 @@ const PostDebtModal = ({ isOpen, onClose }) => {
                 Recorrencia
                 <Select
                   placeholder="Select option"
-                  onChange={(e) => setRecorrenciaId(e.target.value)}
+                  onChange={(e) =>setRecorrenciaId(e.target.value)}
                 >
                   {tipos_divida?.map((item, index) => (
                     <option key={index} value={item.id}>
@@ -122,13 +129,24 @@ const PostDebtModal = ({ isOpen, onClose }) => {
                     </option>
                   ))}
                 </Select>
-                </FormLabel>
-                <Box marginLeft={"0px"}>
-                <Checkbox onChange={(e) => setPaga(!paga)}  size='md' colorScheme='green' >
-                  Paga?
+              </FormLabel>
+              <Flex marginLeft={"0px"} flexDir={"row"} justifyContent={"space-between"}>
+                <NumberInput defaultValue={1} min={1} 
+                max={59} 
+                value={repetitions}
+                onChange={(e) => setRepetitions(e)}>
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+                <Box >
+                  <Checkbox onChange={(e) => setPaga(!paga)} size='md' colorScheme='green' >
+                    Paga?
                   </Checkbox>
-                  </Box>
-
+                </Box>
+              </Flex>
             </FormControl>
           </ModalBody>
 

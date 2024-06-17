@@ -29,7 +29,7 @@ const WinContainer = () => {
         {
             accessorKey: 'data_recebimento',
             header: 'Data de Recebimento',
-            cell: (props) => <p>{props.getValue()}</p>
+            cell: (props) => <p>{format_date(props.getValue())}</p>
         },
         {
             accessorKey: 'created_at',

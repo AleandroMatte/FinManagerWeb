@@ -14,6 +14,7 @@ const DebtPage = ({ columns }) => {
     const [estado_tabela, setEstadoTabela] = useState(null);
     const [loading, setIsloading] = useState(false)
     const [user_debts, setUserDebtData] = useState();
+    const [ total_amount_paid, setTotalAmount] = useState();
     const [to_pay, setToPay] = useState();
     const [paid, setPaid] = useState();
     const [unpaid, setUnpaid] = useState();
@@ -33,15 +34,16 @@ const DebtPage = ({ columns }) => {
                 }
             })
             setUserDebtData(response?.data['Debts'])
+            console.log(user_debts)
             setToPay(response?.data['to_pay_this_year'])
             setPaid(response?.data['number_of_debts_paid'])
             setUnpaid(response?.data['unpaid_debts'])
+            setTotalAmount(response?.data['total_amount_paid'])
         }
         catch (error) {
             if (error.response && error.response.status === 401) {
                 handlePostResponse(toast, false, "Não Authenticado", "Favor reautenticar")
-                navigate("/")
-                return
+                navigate("/");
             }
             handlePostResponse(toast, false, "Algo deu errado", "tente novamente mais tarde")
 
@@ -52,6 +54,7 @@ const DebtPage = ({ columns }) => {
 
     useEffect(() => {
         fetch_user_debt()
+       
     }, [])
 
 
@@ -65,6 +68,12 @@ const DebtPage = ({ columns }) => {
             />
             <Flex flexDir={"row"} w={"100%"}>
                 <Flex flexDir={"column"} h={"100%"} justifyContent={"space-evenly"} paddingRight={"10px"} paddingLeft={"10px"} >
+                <Stack>
+                        <Card bgColor={"whiteAlpha.600"}  variant ={"elevated"}><CardHeader textAlign={"center"}>Total Pago em 2024</CardHeader><CardBody>
+                            <Flex justifyContent={"center"}>
+                                <Text color={"green"} fontSize='2xl' as='b'>R$ {total_amount_paid}</Text>
+                            </Flex></CardBody></Card>
+                    </Stack>
                     <Stack   bg={"red"}>
                         <Card bgColor={"green.300"}  variant ={"elevated"}><CardHeader textAlign={"center"}>Dividas pagas em 2024</CardHeader><CardBody>
                             <Flex justifyContent={"center"}>
@@ -72,9 +81,9 @@ const DebtPage = ({ columns }) => {
                             </Flex></CardBody></Card>
                     </Stack>
                     <Stack marginTop={"10%"} >
-                        <Card  bg={"orange.300"} variant ={"elevated"}><CardHeader textAlign={"center"}>Dividas a pagar em 2024</CardHeader><CardBody>
+                        <Card  bg={"orange.300"} variant ={"elevated"}><CardHeader textAlign={"center"}>Total a pagar em 2024</CardHeader><CardBody>
                             <Flex justifyContent={"center"}>
-                                <Text fontSize='2xl' as='b'>{to_pay}</Text>
+                                <Text color={"red"} fontSize='2xl' as='b'>R${to_pay}</Text>
                             </Flex></CardBody></Card>
                     </Stack>
                     <Stack marginTop={"10%"} bg={"red"} >
