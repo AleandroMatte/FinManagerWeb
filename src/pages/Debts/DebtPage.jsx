@@ -6,10 +6,12 @@ import PaginatedTable from '../../components/Table';
 import handlePostResponse from '../../components/ToastMessage/Toast';
 import BackendApi from '../../Services';
 import { useNavigate } from 'react-router-dom';
+import DebtInspectModal from '../../components/InspectDebtModal/DebtInspectModal';
 
 
 const DebtPage = ({ columns }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen:isOpenInspectDebt, onOpen:onOpenInspectDebt, onClose:onCloseInspectDebt } = useDisclosure()
     const [columnFilters, SetColumnFilters] = useState([])
     const [estado_tabela, setEstadoTabela] = useState(null);
     const [loading, setIsloading] = useState(false)
@@ -18,6 +20,7 @@ const DebtPage = ({ columns }) => {
     const [to_pay, setToPay] = useState();
     const [paid, setPaid] = useState();
     const [unpaid, setUnpaid] = useState();
+    const [modal_data, setModalData] = useState();
     const toast = useToast()
     const navigate = useNavigate()
 
@@ -34,7 +37,6 @@ const DebtPage = ({ columns }) => {
                 }
             })
             setUserDebtData(response?.data['Debts'])
-            console.log(user_debts)
             setToPay(response?.data['to_pay_this_year'])
             setPaid(response?.data['number_of_debts_paid'])
             setUnpaid(response?.data['unpaid_debts'])
@@ -50,6 +52,10 @@ const DebtPage = ({ columns }) => {
         }
 
     }
+    function handle_row_clicked(debt_data) {
+        setModalData(debt_data)
+        onOpenInspectDebt()
+      }
 
 
     useEffect(() => {
@@ -99,12 +105,15 @@ const DebtPage = ({ columns }) => {
                     columns={columns}
                     lift_table_state={handleTableInstance}
                     use_custom_filtering={true}
-                    on_row_click={() => console.log(" ")}
+                    on_row_click={handle_row_clicked}
                 />
             </Flex>
 
             {isOpen && (
                 <PostDebtModal isOpen={isOpen} onClose={onClose} />
+            )}
+            {isOpenInspectDebt && (
+                <DebtInspectModal modal_data={modal_data} isOpen={isOpenInspectDebt} onClose={onCloseInspectDebt} />
             )}
         </Flex>
 

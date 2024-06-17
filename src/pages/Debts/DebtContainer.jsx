@@ -37,8 +37,9 @@ const DebtContainer = () => {
             cell: (props) => <p>{format_date(props.getValue())}</p>
         },
         {
-            header: 'Ações',
-            cell: (props) => <p></p>
+            accessorKey: 'paga',
+            header: 'Paga?',
+            cell: (props) => <p>{props.getValue()===true? "paga":""}</p>
         }
     ], [])
 
