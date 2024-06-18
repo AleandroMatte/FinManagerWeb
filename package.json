@@ -12,13 +12,15 @@
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",
+    "@nivo/line": "^0.87.0",
     "@tanstack/react-table": "^8.17.3",
     "axios": "^1.7.2",
     "jwt-decode": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.2.1",
-    "react-router-dom": "^6.23.1"
+    "react-router-dom": "^6.23.1",
+    "recharts": "^2.12.7"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
